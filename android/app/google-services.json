@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "851431064186",
+    "firebase_url": "https://storage-notification.firebaseio.com",
+    "project_id": "storage-notification",
+    "storage_bucket": "storage-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851431064186:android:b8f1852b668bf2b0be31c3",
+        "android_client_info": {
+          "package_name": "com.mportog.storagenotification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851431064186-hf4levcomfb8824j1k1p60ctksrgb742.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdMIaj69TiCkQoSBuCRwvUFzCByQc7qdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851431064186-hf4levcomfb8824j1k1p60ctksrgb742.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
