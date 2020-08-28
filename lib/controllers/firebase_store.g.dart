@@ -32,6 +32,14 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
         () => super.signIn(user: user, onFail: onFail, onSuccess: onSuccess));
   }
 
+  final _$loadCurrentUserAsyncAction =
+      AsyncAction('_FirebaseStoreBase.loadCurrentUser');
+
+  @override
+  Future<void> loadCurrentUser() {
+    return _$loadCurrentUserAsyncAction.run(() => super.loadCurrentUser());
+  }
+
   @override
   String toString() {
     return '''

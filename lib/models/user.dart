@@ -1,5 +1,8 @@
 class User {
-  User({this.email, this.password});
-  final String email;
-  final String password;
+  String fullName;
+  String email;
+  String password;
+  String confirmPassword;
+
+  User({this.fullName, this.email, this.password, this.confirmPassword});
 }

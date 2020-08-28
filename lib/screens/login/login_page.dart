@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
             elevation: 0,
             automaticallyImplyLeading: false,
-            title: const Text('Login'),
+            title: const Text('Entrar'),
             centerTitle: true),
         body: Form(
             key: formKey,
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                           textColor: Colors.grey,
                           onPressed: () {
                             Navigator.of(context)
-                                .pushReplacementNamed('/singup');
+                                .pushReplacementNamed('/signup');
                           },
                           child: const Text('CADASTRAR'),
                         )

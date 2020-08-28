@@ -34,12 +34,12 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(color: Colors.indigo),
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          initialRoute: '/login',
+          initialRoute: '/',
           onGenerateRoute: (settings) {
             switch (settings.name) {
               case '/signup':
                 return MaterialPageRoute(builder: (_) => FormCadastroPage());
-              case '/login':
+              case '/':
               default:
                 return MaterialPageRoute(builder: (_) => LoginPage());
             }
