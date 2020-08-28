@@ -4,8 +4,6 @@ bool emailValid(String email) {
   return regex.hasMatch(email);
 }
 
-bool isMatch(String value1, String value2) => value1 == value2;
-
 String nameValid(String name) {
   if (name.isEmpty) {
     return 'Campo obrigatório';

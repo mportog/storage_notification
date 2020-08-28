@@ -99,8 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                   onSuccess: () {
                                     scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: const Text('Logado com sucesso'),
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('Logado com sucesso'),
                                       backgroundColor: Colors.green,
                                     ));
                                   });

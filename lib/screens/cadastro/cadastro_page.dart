@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:storagenotification/controllers/firebase_store.dart';
 import 'package:storagenotification/helpers/helper_widgets.dart';
 import 'package:storagenotification/helpers/validators.dart';
 import 'package:storagenotification/models/user.dart';
@@ -13,6 +15,13 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final User user = User();
+  FirebaseStore _firebaseStore;
+  @override
+  void didChangeDependencies() {
+    _firebaseStore = Provider.of<FirebaseStore>(context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +34,7 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              _cancelCadastro();
+              Navigator.of(context).pushReplacementNamed('/');
             },
             tooltip: 'Cancelar',
           )
@@ -35,7 +44,6 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
       body: Form(
         autovalidate: false,
         key: formKey,
-        onWillPop: _cancelCadastro,
         child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             children: <Widget>[
@@ -44,7 +52,7 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
                   validator: (name) => nameValid(name),
                   keyboardType: TextInputType.text,
                   label: 'Nome completo:',
-                  onSaved: (value) => user.fullName = value),
+                  onSaved: (value) => user.name = value),
               const SizedBox(height: 20),
               InputForm(
                   validator: (email) {
@@ -106,10 +114,21 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
                         backgroundColor: Colors.red,
                       ));
                     } else {
-                      scaffoldKey.currentState.showSnackBar(const SnackBar(
-                        content: Text('Cadastrado com sucesso'),
-                        backgroundColor: Colors.green,
-                      ));
+                      _firebaseStore.signUp(
+                          user: user,
+                          onFail: (e) {
+                            scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text('Falha ao entrar: $e'),
+                              backgroundColor: Colors.red,
+                            ));
+                          },
+                          onSuccess: () {
+                            scaffoldKey.currentState
+                                .showSnackBar(const SnackBar(
+                              content: Text('Cadastrado com sucesso'),
+                              backgroundColor: Colors.green,
+                            ));
+                          });
                     }
                   }
                 },
@@ -119,26 +138,6 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
               ),
             ]),
       ),
-    );
-  }
-
-  Future<bool> _cancelCadastro() {
-    return alertMessage(
-      context,
-      "Deseja cancelar o cadastro?",
-      content: const Text('Dados preenchidos serão perdidos'),
-      actions: <Widget>[
-        FlatButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-            child: const Text('Sim', style: TextStyle(color: Colors.red))),
-        FlatButton(
-          color: Theme.of(context).primaryColor,
-          onPressed: () => Navigator.pop(context, false),
-          child: const Text('Não'),
-        ),
-      ],
     );
   }
 }

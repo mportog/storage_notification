@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storagenotification/controllers/firebase_store.dart';
-import 'package:storagenotification/controllers/user_store.dart';
 import 'package:storagenotification/screens/login/login_page.dart';
-
-import 'screens/cadastro/cadastro_page.dart';
+import 'package:storagenotification/screens/cadastro/cadastro_page.dart';
+import 'package:storagenotification/screens/home/home_page.dart';
 
 Future<void> main() async {
-  runApp(MyApp());
+  runApp(FireFlutter());
 }
 
-class MyApp extends StatelessWidget {
+class FireFlutter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         Provider<FirebaseStore>(create: (_) => FirebaseStore()),
-        Provider<UserStore>(create: (_) => UserStore()),
       ],
       child: GestureDetector(
         onTap: () {
@@ -27,7 +25,7 @@ class MyApp extends StatelessWidget {
           }
         },
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'FireFlutter',
           theme: ThemeData(
             primarySwatch: Colors.indigo,
             splashColor: Colors.indigo,
@@ -39,9 +37,11 @@ class MyApp extends StatelessWidget {
             switch (settings.name) {
               case '/signup':
                 return MaterialPageRoute(builder: (_) => FormCadastroPage());
+              case '/login':
+                return MaterialPageRoute(builder: (_) => LoginPage());
               case '/':
               default:
-                return MaterialPageRoute(builder: (_) => LoginPage());
+                return MaterialPageRoute(builder: (_) => HomePage());
             }
           },
         ),

@@ -24,6 +24,21 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
     });
   }
 
+  final _$loggedInAtom = Atom(name: '_FirebaseStoreBase.loggedIn');
+
+  @override
+  bool get loggedIn {
+    _$loggedInAtom.reportRead();
+    return super.loggedIn;
+  }
+
+  @override
+  set loggedIn(bool value) {
+    _$loggedInAtom.reportWrite(value, super.loggedIn, () {
+      super.loggedIn = value;
+    });
+  }
+
   final _$signInAsyncAction = AsyncAction('_FirebaseStoreBase.signIn');
 
   @override
@@ -32,18 +47,28 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
         () => super.signIn(user: user, onFail: onFail, onSuccess: onSuccess));
   }
 
-  final _$loadCurrentUserAsyncAction =
-      AsyncAction('_FirebaseStoreBase.loadCurrentUser');
+  final _$_loadCurrentUserAsyncAction =
+      AsyncAction('_FirebaseStoreBase._loadCurrentUser');
 
   @override
-  Future<void> loadCurrentUser() {
-    return _$loadCurrentUserAsyncAction.run(() => super.loadCurrentUser());
+  Future<void> _loadCurrentUser({FirebaseUser firebaseUser}) {
+    return _$_loadCurrentUserAsyncAction
+        .run(() => super._loadCurrentUser(firebaseUser: firebaseUser));
+  }
+
+  final _$signUpAsyncAction = AsyncAction('_FirebaseStoreBase.signUp');
+
+  @override
+  Future<void> signUp({User user, Function onFail, Function onSuccess}) {
+    return _$signUpAsyncAction.run(
+        () => super.signUp(user: user, onFail: onFail, onSuccess: onSuccess));
   }
 
   @override
   String toString() {
     return '''
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+loggedIn: ${loggedIn}
     ''';
   }
 }
