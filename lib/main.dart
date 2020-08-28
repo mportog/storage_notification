@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storagenotification/controllers/firebase_store.dart';
+import 'package:storagenotification/controllers/user_store.dart';
 import 'package:storagenotification/screens/login/login_page.dart';
 
 import 'screens/cadastro/cadastro_page.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<FirebaseStore>(create: (_) => FirebaseStore()),
+        Provider<UserStore>(create: (_) => UserStore()),
       ],
       child: GestureDetector(
         onTap: () {

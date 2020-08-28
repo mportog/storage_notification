@@ -32,8 +32,8 @@ dependencies:
   firebase_auth: ^0.16.0
   firebase_storage: ^3.1.5
   cloud_functions: ^0.5.0
-  mobx: ^1.1.1
-  flutter_mobx: ^1.1.0
+  mobx: ^1.2.1+2
+  flutter_mobx: ^1.1.0+2
   provider: ^4.0.5
   flutter_launcher_icons: ^0.7.4
 
@@ -44,8 +44,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mobx_codegen: ^1.0.3
-  build_runner: ^1.8.1
+  mobx_codegen: ^1.1.0+1
+  build_runner: ^1.10.1
   lint: ^1.2.0
 
 

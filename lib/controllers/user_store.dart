@@ -7,9 +7,6 @@ abstract class _UserStoreBase with Store {
   @observable
   bool isVisible = false;
 
-  @action
-  set visible(bool visible) => isVisible = visible;
-
-  @action
+  set visible(bool value) => isVisible = value;
   bool get visible => isVisible;
 }

@@ -14,10 +14,7 @@ abstract class _FirebaseStoreBase with Store {
   @observable
   bool isLoading = false;
 
-  @action
-  set loading(bool loading) => isLoading = loading;
-
-  @action
+  set loading(bool value) => isLoading = value;
   bool get loading => isLoading;
 
   @action
