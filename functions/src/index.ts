@@ -1,25 +1,14 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-// Start writing Firebase Functions
-// https://firebase.google.com/docs/functions/typescript
 
 admin.initializeApp(functions.config().firebase);
 
-export const helloWorld = functions.https.onCall((data, context) =>
-    ({ data: "Olá mundo das funções na nuvem" }));
+export const onNewOrder = functions.firestore.document("/assets/PAU5401001/{date}").onCreate(async (snapshot, context) => {
 
+    const date = context.params.date;
 
-export const getUserData = functions.https.onCall(async (data, context) => {
-    if (!context.auth) {
-        return {
-            "data": "Nenhum usuario logado"
-        };
-    }
-    const snapshot = await admin.firestore().collection("users").doc(context.auth.uid).get();
-    return { "data": snapshot.data() };
-});
+    const querySnapshot = await admin.firestore().collection('assets').doc('PAU5401001').collection('date').get();
+    const allDates = querySnapshot.docs.map(doc => doc.id);
 
-export const addMessage = functions.https.onCall((data, context) => {
-    console.log(data);
-    return { "success": "true" };
+    console.log(date, allDates);
 });

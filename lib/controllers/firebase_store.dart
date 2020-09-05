@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -53,8 +55,8 @@ abstract class _FirebaseStoreBase with Store {
       final DocumentSnapshot docUser =
           await firestore.collection('users').document(currentUser.uid).get();
       user = User.fromDocument(docUser);
+      saveToken();
       isLoggedIn = true;
-      // }
     }
     loading = false;
   }
@@ -69,7 +71,7 @@ abstract class _FirebaseStoreBase with Store {
       user.id = result.user.uid;
       isLoggedIn = true;
       await user.saveData();
-
+      saveToken();
       onSuccess();
     } on PlatformException catch (e) {
       onFail(getErrorString(e.code));
@@ -104,5 +106,14 @@ abstract class _FirebaseStoreBase with Store {
     } finally {
       loading = false;
     }
+  }
+
+  Future<void> saveToken() async {
+    final token = await FirebaseMessaging().getToken();
+    await user.tokensReference.document(token).setData({
+      'token': token,
+      'updatedAt': FieldValue.serverTimestamp(),
+      'platform': Platform.operatingSystem,
+    });
   }
 }

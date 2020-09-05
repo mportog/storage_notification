@@ -21,6 +21,15 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       endDrawer: EndDrawerBase(),
+      body: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          RaisedButton(
+            onPressed: () {},
+            child: const Text('Agendar HOJE daqui 30 segundos'),
+          )
+        ],
+      ),
     );
   }
 }

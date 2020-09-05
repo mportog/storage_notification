@@ -27,4 +27,6 @@ class User {
 
   DocumentReference get firestoreRef =>
       Firestore.instance.document('users/$id');
+
+  CollectionReference get tokensReference => firestoreRef.collection('tokens');
 }
