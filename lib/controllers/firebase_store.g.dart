@@ -24,18 +24,33 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
     });
   }
 
-  final _$loggedInAtom = Atom(name: '_FirebaseStoreBase.loggedIn');
+  final _$isLoggedInAtom = Atom(name: '_FirebaseStoreBase.isLoggedIn');
 
   @override
-  bool get loggedIn {
-    _$loggedInAtom.reportRead();
-    return super.loggedIn;
+  bool get isLoggedIn {
+    _$isLoggedInAtom.reportRead();
+    return super.isLoggedIn;
   }
 
   @override
-  set loggedIn(bool value) {
-    _$loggedInAtom.reportWrite(value, super.loggedIn, () {
-      super.loggedIn = value;
+  set isLoggedIn(bool value) {
+    _$isLoggedInAtom.reportWrite(value, super.isLoggedIn, () {
+      super.isLoggedIn = value;
+    });
+  }
+
+  final _$onlyEmailAtom = Atom(name: '_FirebaseStoreBase.onlyEmail');
+
+  @override
+  bool get onlyEmail {
+    _$onlyEmailAtom.reportRead();
+    return super.onlyEmail;
+  }
+
+  @override
+  set onlyEmail(bool value) {
+    _$onlyEmailAtom.reportWrite(value, super.onlyEmail, () {
+      super.onlyEmail = value;
     });
   }
 
@@ -64,11 +79,26 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
         () => super.signUp(user: user, onFail: onFail, onSuccess: onSuccess));
   }
 
+  final _$_FirebaseStoreBaseActionController =
+      ActionController(name: '_FirebaseStoreBase');
+
+  @override
+  void signOut() {
+    final _$actionInfo = _$_FirebaseStoreBaseActionController.startAction(
+        name: '_FirebaseStoreBase.signOut');
+    try {
+      return super.signOut();
+    } finally {
+      _$_FirebaseStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 isLoading: ${isLoading},
-loggedIn: ${loggedIn}
+isLoggedIn: ${isLoggedIn},
+onlyEmail: ${onlyEmail}
     ''';
   }
 }

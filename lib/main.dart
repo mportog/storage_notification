@@ -4,6 +4,7 @@ import 'package:storagenotification/controllers/firebase_store.dart';
 import 'package:storagenotification/screens/login/login_page.dart';
 import 'package:storagenotification/screens/cadastro/cadastro_page.dart';
 import 'package:storagenotification/screens/home/home_page.dart';
+import 'package:storagenotification/services/app_settings.dart';
 
 Future<void> main() async {
   runApp(FireFlutter());
@@ -26,12 +27,7 @@ class FireFlutter extends StatelessWidget {
         },
         child: MaterialApp(
           title: 'FireFlutter',
-          theme: ThemeData(
-            primarySwatch: Colors.indigo,
-            splashColor: Colors.indigo,
-            appBarTheme: AppBarTheme(color: Colors.indigo),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
+          theme: AppSettings().theme(),
           initialRoute: '/',
           onGenerateRoute: (settings) {
             switch (settings.name) {

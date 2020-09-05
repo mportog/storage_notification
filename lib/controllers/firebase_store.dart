@@ -20,12 +20,15 @@ abstract class _FirebaseStoreBase with Store {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final Firestore firestore = Firestore.instance;
-  User user;
 
   @observable
-  bool loggedIn = false;
+  bool isLoggedIn = false;
 
-  bool get isLoggedIn => loggedIn = user != null;
+  @observable
+  User user = User();
+
+  @observable
+  bool onlyEmail = false;
 
   @action
   Future<void> signIn({User user, Function onFail, Function onSuccess}) async {
@@ -50,6 +53,8 @@ abstract class _FirebaseStoreBase with Store {
       final DocumentSnapshot docUser =
           await firestore.collection('users').document(currentUser.uid).get();
       user = User.fromDocument(docUser);
+      isLoggedIn = true;
+      // }
     }
     loading = false;
   }
@@ -62,7 +67,7 @@ abstract class _FirebaseStoreBase with Store {
           email: user.email, password: user.password);
 
       user.id = result.user.uid;
-
+      isLoggedIn = true;
       await user.saveData();
 
       onSuccess();
@@ -73,8 +78,31 @@ abstract class _FirebaseStoreBase with Store {
     }
   }
 
+  @action
   void signOut() {
     auth.signOut();
-    user = null;
+    isLoggedIn = false;
+  }
+
+  Future<void> deleteAccount() async {
+    await firestore.collection('users').document(user.id).delete();
+  }
+
+  Future<void> resetPassword(
+      {String mail, Function onFail, Function onSuccess}) async {
+    try {
+      if (onlyEmail) {
+        loading = true;
+        await auth.sendPasswordResetEmail(email: mail);
+        onlyEmail = false;
+        onSuccess();
+      } else {
+        onlyEmail = true;
+      }
+    } on PlatformException catch (e) {
+      onFail(getErrorString(e.code));
+    } finally {
+      loading = false;
+    }
   }
 }

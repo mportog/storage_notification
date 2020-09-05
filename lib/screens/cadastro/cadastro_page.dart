@@ -33,16 +33,13 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            },
+            onPressed: () => Navigator.of(context).pop(true),
             tooltip: 'Cancelar',
           )
         ],
         title: const Text('Cadastrar'),
       ),
       body: Form(
-        autovalidate: false,
         key: formKey,
         child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -98,7 +95,7 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
                 },
                 onSaved: (value) => user.confirmPassword = value,
                 keyboardType: TextInputType.text,
-                label: 'Cinfirmar senha:',
+                label: 'Confirmar senha:',
               ),
               const SizedBox(height: 35),
               RaisedButton(
@@ -110,25 +107,29 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
                     formKey.currentState.save();
                     if (user.password != user.confirmPassword) {
                       scaffoldKey.currentState.showSnackBar(const SnackBar(
-                        content: Text('Senhas não se correspondem'),
+                        content: Text('Senhas não correspondem'),
                         backgroundColor: Colors.red,
                       ));
                     } else {
-                      _firebaseStore.signUp(
-                          user: user,
-                          onFail: (e) {
-                            scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content: Text('Falha ao entrar: $e'),
-                              backgroundColor: Colors.red,
-                            ));
-                          },
-                          onSuccess: () {
-                            scaffoldKey.currentState
-                                .showSnackBar(const SnackBar(
-                              content: Text('Cadastrado com sucesso'),
-                              backgroundColor: Colors.green,
-                            ));
-                          });
+                      _firebaseStore
+                          .signUp(
+                              user: user,
+                              onFail: (e) {
+                                scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  content: Text('Falha ao entrar: $e'),
+                                  backgroundColor: Colors.red,
+                                ));
+                              },
+                              onSuccess: () {
+                                scaffoldKey.currentState
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Cadastrado com sucesso'),
+                                  backgroundColor: Colors.green,
+                                ));
+                              })
+                          .then((value) =>
+                              Future.delayed(const Duration(seconds: 1)))
+                          .then((value) => Navigator.of(context).pop(true));
                     }
                   }
                 },
