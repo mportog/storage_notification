@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:storagenotification/controllers/firebase_store.dart';
-import 'package:storagenotification/screens/home/widgets/calendar_reservation_view.dart';
+import 'package:storagenotification/controllers/calendar_store.dart';
+import 'package:storagenotification/controllers/firebase_user_store.dart';
+import 'package:storagenotification/screens/home/calendar_reservation_view.dart';
 import 'package:storagenotification/screens/login/login_page.dart';
 import 'package:storagenotification/screens/cadastro/cadastro_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:storagenotification/services/app_settings.dart';
 
 void main() {
-  initializeDateFormatting().then((_) => runApp(FireFlutter()));
+  initializeDateFormatting('pt_BR').then((_) => runApp(FireFlutter()));
 }
 
 class FireFlutter extends StatelessWidget {
@@ -16,7 +17,8 @@ class FireFlutter extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<FirebaseStore>(create: (_) => FirebaseStore()),
+        Provider<FirebaseUserStore>(create: (_) => FirebaseUserStore()),
+        Provider<CalendarStore>(create: (_) => CalendarStore()),
       ],
       child: GestureDetector(
         onTap: () {
@@ -38,7 +40,7 @@ class FireFlutter extends StatelessWidget {
                 return MaterialPageRoute(builder: (_) => LoginPage());
               case '/':
               default:
-                return MaterialPageRoute(builder: (_) => MyHomePage());
+                return MaterialPageRoute(builder: (_) => CalendarHomePage());
             }
           },
         ),

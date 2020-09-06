@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'firebase_store.dart';
+part of 'firebase_user_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,8 +8,8 @@ part of 'firebase_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$FirebaseStore on _FirebaseStoreBase, Store {
-  final _$isLoadingAtom = Atom(name: '_FirebaseStoreBase.isLoading');
+mixin _$FirebaseUserStore on _FirebaseUserStoreBase, Store {
+  final _$isLoadingAtom = Atom(name: '_FirebaseUserStoreBase.isLoading');
 
   @override
   bool get isLoading {
@@ -24,7 +24,7 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
     });
   }
 
-  final _$isLoggedInAtom = Atom(name: '_FirebaseStoreBase.isLoggedIn');
+  final _$isLoggedInAtom = Atom(name: '_FirebaseUserStoreBase.isLoggedIn');
 
   @override
   bool get isLoggedIn {
@@ -39,7 +39,22 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
     });
   }
 
-  final _$onlyEmailAtom = Atom(name: '_FirebaseStoreBase.onlyEmail');
+  final _$userAtom = Atom(name: '_FirebaseUserStoreBase.user');
+
+  @override
+  User get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(User value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
+  final _$onlyEmailAtom = Atom(name: '_FirebaseUserStoreBase.onlyEmail');
 
   @override
   bool get onlyEmail {
@@ -54,7 +69,7 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
     });
   }
 
-  final _$signInAsyncAction = AsyncAction('_FirebaseStoreBase.signIn');
+  final _$signInAsyncAction = AsyncAction('_FirebaseUserStoreBase.signIn');
 
   @override
   Future<void> signIn({User user, Function onFail, Function onSuccess}) {
@@ -63,7 +78,7 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
   }
 
   final _$_loadCurrentUserAsyncAction =
-      AsyncAction('_FirebaseStoreBase._loadCurrentUser');
+      AsyncAction('_FirebaseUserStoreBase._loadCurrentUser');
 
   @override
   Future<void> _loadCurrentUser({FirebaseUser firebaseUser}) {
@@ -71,7 +86,7 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
         .run(() => super._loadCurrentUser(firebaseUser: firebaseUser));
   }
 
-  final _$signUpAsyncAction = AsyncAction('_FirebaseStoreBase.signUp');
+  final _$signUpAsyncAction = AsyncAction('_FirebaseUserStoreBase.signUp');
 
   @override
   Future<void> signUp({User user, Function onFail, Function onSuccess}) {
@@ -79,17 +94,17 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
         () => super.signUp(user: user, onFail: onFail, onSuccess: onSuccess));
   }
 
-  final _$_FirebaseStoreBaseActionController =
-      ActionController(name: '_FirebaseStoreBase');
+  final _$_FirebaseUserStoreBaseActionController =
+      ActionController(name: '_FirebaseUserStoreBase');
 
   @override
   void signOut() {
-    final _$actionInfo = _$_FirebaseStoreBaseActionController.startAction(
-        name: '_FirebaseStoreBase.signOut');
+    final _$actionInfo = _$_FirebaseUserStoreBaseActionController.startAction(
+        name: '_FirebaseUserStoreBase.signOut');
     try {
       return super.signOut();
     } finally {
-      _$_FirebaseStoreBaseActionController.endAction(_$actionInfo);
+      _$_FirebaseUserStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
@@ -98,6 +113,7 @@ mixin _$FirebaseStore on _FirebaseStoreBase, Store {
     return '''
 isLoading: ${isLoading},
 isLoggedIn: ${isLoggedIn},
+user: ${user},
 onlyEmail: ${onlyEmail}
     ''';
   }

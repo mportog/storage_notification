@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:storagenotification/helpers/validators.dart';
 import 'package:storagenotification/screens/login/widget/login_background.dart';
 import 'package:storagenotification/models/user.dart';
-import 'package:storagenotification/controllers/firebase_store.dart';
+import 'package:storagenotification/controllers/firebase_user_store.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,11 +16,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  FirebaseStore _firebaseStore;
+  FirebaseUserStore _firebaseUserStore;
 
   @override
   void didChangeDependencies() {
-    _firebaseStore = Provider.of<FirebaseStore>(context);
+    _firebaseUserStore = Provider.of<FirebaseUserStore>(context);
     super.didChangeDependencies();
   }
 
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
           automaticallyImplyLeading: false,
           elevation: 0,
           title: Observer(
-              builder: (_) => _firebaseStore.onlyEmail
+              builder: (_) => _firebaseUserStore.onlyEmail
                   ? const Text('Reset de senha')
                   : const Text('Entrar')),
           centerTitle: true,
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Visibility(
-                  visible: !_firebaseStore.onlyEmail,
+                  visible: !_firebaseUserStore.onlyEmail,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 25),
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: <Widget>[
                           FlatButton(
                               onPressed: () {
-                                _firebaseStore.resetPassword(
+                                _firebaseUserStore.resetPassword(
                                     mail: emailController.text,
                                     onFail: (e) {
                                       scaffoldKey.currentState
@@ -114,14 +114,14 @@ class _LoginPageState extends State<LoginPage> {
                               child: Text('Esqueci minha senha',
                                   style: TextStyle(color: Colors.grey))),
                           Visibility(
-                            visible: !_firebaseStore.onlyEmail,
+                            visible: !_firebaseUserStore.onlyEmail,
                             child: RaisedButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
                               onPressed: () {
                                 if (formKey.currentState.validate()) {
-                                  _firebaseStore.signIn(
+                                  _firebaseUserStore.signIn(
                                       user: User(
                                           email: emailController.text,
                                           password: passController.text),
@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Visibility(
-                            visible: !_firebaseStore.onlyEmail,
+                            visible: !_firebaseUserStore.onlyEmail,
                             child: RaisedButton(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(

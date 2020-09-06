@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:storagenotification/controllers/firebase_store.dart';
+import 'package:storagenotification/controllers/firebase_user_store.dart';
 import 'package:storagenotification/helpers/helper_widgets.dart';
 import 'package:storagenotification/helpers/validators.dart';
 import 'package:storagenotification/models/user.dart';
@@ -15,10 +15,10 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final User user = User();
-  FirebaseStore _firebaseStore;
+  FirebaseUserStore _firebaseUserStore;
   @override
   void didChangeDependencies() {
-    _firebaseStore = Provider.of<FirebaseStore>(context);
+    _firebaseUserStore = Provider.of<FirebaseUserStore>(context);
     super.didChangeDependencies();
   }
 
@@ -111,7 +111,7 @@ class _FormCadastroPageState extends State<FormCadastroPage> with WidgetHelper {
                         backgroundColor: Colors.red,
                       ));
                     } else {
-                      _firebaseStore
+                      _firebaseUserStore
                           .signUp(
                               user: user,
                               onFail: (e) {

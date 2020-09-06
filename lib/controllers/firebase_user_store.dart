@@ -6,12 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:storagenotification/helpers/firebase_errors.dart';
 import 'package:storagenotification/models/user.dart';
 import 'package:mobx/mobx.dart';
-part 'firebase_store.g.dart';
+part 'firebase_user_store.g.dart';
 
-class FirebaseStore = _FirebaseStoreBase with _$FirebaseStore;
+class FirebaseUserStore = _FirebaseUserStoreBase with _$FirebaseUserStore;
 
-abstract class _FirebaseStoreBase with Store {
-  _FirebaseStoreBase() {
+abstract class _FirebaseUserStoreBase with Store {
+  _FirebaseUserStoreBase() {
     _loadCurrentUser();
   }
   @observable

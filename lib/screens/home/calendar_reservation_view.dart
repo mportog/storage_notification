@@ -1,101 +1,39 @@
-//  Copyright (c) 2019 Aleksander Woźniak
-//  Licensed under Apache License v2.0
-
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import 'package:storagenotification/controllers/calendar_store.dart';
 import 'package:storagenotification/screens/commons/drawer/end_drawer_base.dart';
 import 'package:storagenotification/screens/home/widgets/custom_list_tile.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// Example holidays
-final Map<DateTime, List> _holidays = {
-  DateTime(2019, 1, 1): ["New Year's Day"],
-  DateTime(2019, 1, 6): ['Epiphany'],
-  DateTime(2019, 2, 14): ["Valentine's Day"],
-  DateTime(2019, 4, 21): ['Easter Sunday'],
-  DateTime(2019, 4, 22): ['Easter Monday'],
-};
-
-class MyHomePage extends StatefulWidget {
+class CalendarHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CalendarHomePageState createState() => _CalendarHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
-  List _selectedEvents;
+class _CalendarHomePageState extends State<CalendarHomePage>
+    with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
   TabController _controller;
-
+  CalendarStore _calendarStore;
   @override
   void initState() {
     super.initState();
-    final _selectedDay = DateTime.now();
     _controller = TabController(length: 2, vsync: this);
-
-    _events = {
-      _selectedDay.subtract(const Duration(days: 30)): [
-        'Event A0',
-        'Event B0',
-        'Event C0'
-      ],
-      _selectedDay.subtract(const Duration(days: 27)): ['Event A1'],
-      _selectedDay.subtract(const Duration(days: 20)): [
-        'Event A2',
-        'Event B2',
-        'Event C2',
-        'Event D2'
-      ],
-      _selectedDay.subtract(const Duration(days: 16)): ['Event A3', 'Event B3'],
-      _selectedDay.subtract(const Duration(days: 10)): [
-        'Event A4',
-        'Event B4',
-        'Event C4'
-      ],
-      _selectedDay.subtract(const Duration(days: 4)): [
-        'Event A5',
-        'Event B5',
-        'Event C5'
-      ],
-      _selectedDay.subtract(const Duration(days: 2)): ['Event A6', 'Event B6'],
-      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-      _selectedDay.add(const Duration(days: 1)): [
-        'Event A8',
-        'Event B8',
-        'Event C8',
-        'Event D8'
-      ],
-      _selectedDay.add(const Duration(days: 3)):
-          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
-      _selectedDay.add(const Duration(days: 7)): [
-        'Event A10',
-        'Event B10',
-        'Event C10'
-      ],
-      _selectedDay.add(const Duration(days: 11)): ['Event A11', 'Event B11'],
-      _selectedDay.add(const Duration(days: 17)): [
-        'Event A12',
-        'Event B12',
-        'Event C12',
-        'Event D12'
-      ],
-      _selectedDay.add(const Duration(days: 22)): ['Event A13', 'Event B13'],
-      _selectedDay.add(const Duration(days: 26)): [
-        'Event A14',
-        'Event B14',
-        'Event C14'
-      ],
-    };
-
-    _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
-
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
-
     _animationController.forward();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _calendarStore = Provider.of<CalendarStore>(context);
+    _calendarStore.shouwEvents();
+    super.didChangeDependencies();
   }
 
   @override
@@ -104,23 +42,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     _animationController.dispose();
     _calendarController.dispose();
     super.dispose();
-  }
-
-  void _onDaySelected(DateTime day, List events) {
-    debugPrint('CALLBACK: _onDaySelected');
-    setState(() {
-      _selectedEvents = events;
-    });
-  }
-
-  void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {
-    debugPrint('CALLBACK: _onVisibleDaysChanged');
-  }
-
-  void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
-    debugPrint('CALLBACK: _onCalendarCreated');
   }
 
   @override
@@ -134,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             icon: Icon(Icons.restore),
             tooltip: 'Hoje',
             onPressed: () {
-              final dateTime = DateTime.now();
+              final DateTime dateTime = DateTime.now();
               _calendarController.setSelectedDay(
                 DateTime(dateTime.year, dateTime.month, dateTime.day),
                 runCallback: true,
@@ -164,37 +85,45 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ]),
       ),
       drawer: EndDrawerBase(),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          _buildTableCalendarWithBuilders(),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: TabBarView(
-              controller: _controller,
-              children: <Widget>[
-                _buildEventList(),
-                ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    CustomListTile(Icons.event_available, const Text('Inserir'),
-                        subtitle: const Text('Data')),
-                    CustomListTile(Icons.event_available, const Text('Inserir'),
-                        subtitle: const Text('Data')),
-                    CustomListTile(Icons.event_available, const Text('Inserir'),
-                        subtitle: const Text('Data')),
-                    CustomListTile(Icons.event_available, const Text('Inserir'),
-                        subtitle: const Text('Data')),
-                    CustomListTile(Icons.event_available, const Text('Inserir'),
-                        subtitle: const Text('Data')),
-                    CustomListTile(Icons.event_available, const Text('Inserir'),
-                        subtitle: const Text('Data')),
-                  ],
-                ),
-              ],
+      body: Observer(
+        builder: (_) => Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            _buildTableCalendarWithBuilders(),
+            const SizedBox(height: 8.0),
+            Expanded(
+              child: TabBarView(
+                controller: _controller,
+                children: <Widget>[
+                  _buildEventList(),
+                  ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      CustomListTile(
+                          Icons.event_available, const Text('Inserir'),
+                          subtitle: const Text('Data')),
+                      CustomListTile(
+                          Icons.event_available, const Text('Inserir'),
+                          subtitle: const Text('Data')),
+                      CustomListTile(
+                          Icons.event_available, const Text('Inserir'),
+                          subtitle: const Text('Data')),
+                      CustomListTile(
+                          Icons.event_available, const Text('Inserir'),
+                          subtitle: const Text('Data')),
+                      CustomListTile(
+                          Icons.event_available, const Text('Inserir'),
+                          subtitle: const Text('Data')),
+                      CustomListTile(
+                          Icons.event_available, const Text('Inserir'),
+                          subtitle: const Text('Data')),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -203,8 +132,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return TableCalendar(
       locale: 'pt_BR',
       calendarController: _calendarController,
-      events: _events,
-      holidays: _holidays,
+      events: _calendarStore.events,
+      // holidays: _calendarStore.holidays,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.slide,
       startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -287,11 +216,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         },
       ),
       onDaySelected: (date, events) {
-        _onDaySelected(date, events);
+        _calendarStore.onDaySelected(date, events);
         _animationController.forward(from: 0.0);
       },
-      onVisibleDaysChanged: _onVisibleDaysChanged,
-      onCalendarCreated: _onCalendarCreated,
+      onVisibleDaysChanged: _calendarStore.onVisibleDaysChanged,
+      onCalendarCreated: _calendarStore.onCalendarCreated,
     );
   }
 
@@ -331,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget _buildEventList() {
     return ListView(
       shrinkWrap: true,
-      children: _selectedEvents
+      children: _calendarStore.selectedEvents
           .map((event) => Card(
                 child: ListTile(
                   leading: Icon(Icons.location_on),
