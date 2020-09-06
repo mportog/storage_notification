@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storagenotification/controllers/calendar_store.dart';
 import 'package:storagenotification/controllers/firebase_user_store.dart';
+import 'package:storagenotification/controllers/reservation_store.dart';
 import 'package:storagenotification/screens/home/calendar_reservation_view.dart';
 import 'package:storagenotification/screens/login/login_page.dart';
 import 'package:storagenotification/screens/cadastro/cadastro_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:storagenotification/services/app_settings.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 void main() {
   initializeDateFormatting('pt_BR').then((_) => runApp(FireFlutter()));
@@ -19,6 +21,8 @@ class FireFlutter extends StatelessWidget {
       providers: [
         Provider<FirebaseUserStore>(create: (_) => FirebaseUserStore()),
         Provider<CalendarStore>(create: (_) => CalendarStore()),
+        Provider<ReservationStore>(create: (_) => ReservationStore()),
+        Provider<CalendarController>(create: (_) => CalendarController()),
       ],
       child: GestureDetector(
         onTap: () {
